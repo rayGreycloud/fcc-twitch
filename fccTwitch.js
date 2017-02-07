@@ -1,28 +1,53 @@
 // Channels to check
-const channelList = ["freecodecamp", "brunofin", "comster404", "MaxguNtv", "chozilla", "VictoryForPhil", "Hazey7893", "JoshOG"];
+const channelsArray = ["freecodecamp", "brunofin", "comster404", "MaxguNtv", "chozilla", "VictoryForPhil", "Hazey7893", "JoshOG"];
 
-// twitch request URL
-const twitchApi = 'https://wind-bow.gomix.me/twitch-api';
 
-// Initialize results array
-const channels = [];
+var html = channelsArray.map((channel) => {
+  let thumbnail, name, description;
+  let channelLink = '';
 
-// Iterate through channels array
-channelList.map((channel) => {
-  // Create request URL
-  const endpoint = `${twitchApi}/${channel}`;
+  // Create request urls
+  const streamsUrl = `https://wind-bow.gomix.me/twitch-api/streams/${channel}`;
+  const channelsUrl = `https://wind-bow.gomix.me/twitch-api/channels/${channel}`;
 
-  // Use built-in browser method to fetch data
-  fetch(endpoint)
+  // Make fetch request
+  fetch(channelsUrl)
     .then(blob => blob.json())
-    // Push onto results array
-    .then(data => channels.push(...data));
+    .then((data) => {
+      if (data.error) {
+        thumbnail = `https://dummyimage.com/80x45/ffffff/000000.jpg&text=404`;
+        name = channel;
+        description = data.error.message;
+      } else {
+        fetch(streamsUrl)
+          .then(blob => blob.json())
+          .then(data => {
+            if (data.stream === null) {
+              thumbnail = `https://dummyimage.com/80x45/6441a4/ffffff.jpg&text=offline`;
+              name = channel;
+              description = 'Channel Offline';
+            } else {
+              thumbnail = data.stream.preview.small;
+              name = data.stream.channel.display_name;
+              description = `
+              <span>${data.stream.game}</span>
+              <span>${data.stream.channel.status}</span>
+              <span>${data.stream.viewers} viewers</span>`;
+            }
+          });
+      }
+    });
 
-  // Process response
-  // check status
-});
+// Return li
+  return `
+    <li class="channel">
+      <span><img src="${thumbnail}" class="thumbnail"></span>
+      <span id="name"><a href=${channelLink} target="_blank"> ${name}</a></span>
+      <span>${description}</span>
+    </li>
+  `;
+// Convert to one string
+}).join('');
 
-
-// Display results
-
-// Event listener for item selection
+// Push into ul
+document.querySelector('#channels').innerHTML = html;
