@@ -1,16 +1,29 @@
+* {
+  box-sizing: border-box;
+}
+
 #channels {
   list-style-type: none;
+  height: 120px;
+  width: 600px;
 }
 
 .thumbnail {
-  border: 1px solid grey;
-  border-radius: 10%;
+  border: 1px solid #777777;
+  padding: 10px;
 }
 
 .channel {
-  background-color: #00ff7f;
-  padding: 5px;
-  margin: 0 auto;
+  background-color:  #99d6ff;
   border: 1px solid grey;
+  color: white;
+  display: flex;
+  flex-direction: row;
+}
 
+.channel span {
+  margin: 10px 10px;
+  padding: 0px 20px;
+  width: 100px;
+  text-align: center;
 }
