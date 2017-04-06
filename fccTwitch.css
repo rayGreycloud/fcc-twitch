@@ -1,0 +1,16 @@
+#channels {
+  list-style-type: none;
+}
+
+.thumbnail {
+  border: 1px solid grey;
+  border-radius: 10%;
+}
+
+.channel {
+  background-color: #00ff7f;
+  padding: 5px;
+  margin: 0 auto;
+  border: 1px solid grey;
+
+}
